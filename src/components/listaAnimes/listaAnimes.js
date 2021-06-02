@@ -3,8 +3,8 @@ import FormControl from "react-bootstrap/FormControl";
 import Spinner from "react-bootstrap/Spinner";
 
 import React, { useState, useEffect } from "react";
-import "./listaAnimes.css";
 import CardAnime from "../cardAnime/cardAnime";
+import { BoxListaAnimes } from "./styles";
 
 const jikanjs = require("jikanjs");
 
@@ -14,9 +14,8 @@ export default function ListaAnimes() {
 
   useEffect(() => {
     jikanjs
-      .loadTop("anime")
+      .loadTop("anime", 1, "tv")
       .then((response) => {
-        console.log(response.top);
         setAnimes(response.top);
       })
       .catch((err) => {
@@ -32,11 +31,10 @@ export default function ListaAnimes() {
         </InputGroup.Prepend>
         <FormControl
           onKeyPress={async (event) => {
-            console.log(event.code);
             if (event.code === "Enter" || event.code === "NumpadEnter") {
               setLoading(true);
               await jikanjs
-                .search("anime", event.target.value)
+                .search("anime", event.target.value, 1, { limit: 20 })
                 .then((response) => {
                   setLoading(false);
                   setAnimes(response.results);
@@ -49,15 +47,17 @@ export default function ListaAnimes() {
           id="formNomeBusca"
         />
       </InputGroup>
-      <div className="boxListaAnimes">
-        {loading ? (
-          <Spinner animation="grow" style={{margin: "2em"}}/>
-        ) : (
-          animes.map((anime) => {
-            return <CardAnime key={anime.mal_id} anime={anime} />;
-          })
-        )}
-      </div>
+      <a href="/">
+        <BoxListaAnimes>
+          {loading ? (
+            <Spinner animation="grow" style={{ margin: "2em" }} />
+          ) : (
+            animes.map((anime) => {
+              return <CardAnime key={anime.mal_id} anime={anime} />;
+            })
+          )}
+        </BoxListaAnimes>
+      </a>
     </div>
   );
 }

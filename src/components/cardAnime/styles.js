@@ -15,6 +15,11 @@ export const CardImg = styled.div`
   background-size: 200px;
   margin: 0 10px;
   border: 1px solid rgba(134, 115, 165, 0.6);
+  transition: transform 0.5s;
+
+  :hover {
+    transform: scale(1.1);
+  }
 
   :hover p {
     opacity: 1;
